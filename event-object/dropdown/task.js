@@ -1,9 +1,9 @@
 const value = document.querySelector('.dropdown__value');
-const drop = document.querySelector('dropdown__list');
-const dropItem = document.querySelector('dropdown__item');
+const drop = document.querySelector('.dropdown__list');
+const dropItem = document.querySelector('.dropdown__item');
 
 
-dropItems.forEach((item) => {
+Object.keys(dropItem).forEach((item) => {
 	item.addEventListener('click', (event) => {
 		event.preventDefault();
 		const selectedValue = item.textContent;
