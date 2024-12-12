@@ -1,18 +1,19 @@
+
+const dropdown = document.querySelector('.dropdown')
+const list = document.querySelector('.dropdown__list');
+const listItems = document.querySelectorAll('.dropdown__item');
 const value = document.querySelector('.dropdown__value');
-const drop = document.querySelector('.dropdown__list');
-const dropItem = document.querySelector('.dropdown__item');
 
-
-Object.keys(dropItem).forEach((item) => {
-	item.addEventListener('click', (event) => {
-		event.preventDefault();
-		const selectedValue = item.textContent;
-		value.textContent = selectedValue;
-		drop.classList.remove('dropdown__list_active');
-	})
+dropdown.addEventListener('click', () => {
+	list.classList.toggle('dropdown__list_active');
 })
 
-
-value.addEventListener('click', () => {
-	drop.classList.toggle('dropdown__list_active');
-});
+for (const item of listItems) {
+	item.addEventListener('click', (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		const selectedValue = item.textContent;
+		value.textContent = selectedValue;
+		list.classList.remove('dropdown__list_active');
+	})
+}
