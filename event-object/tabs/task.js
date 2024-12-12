@@ -1,10 +1,10 @@
 const tabs = document.querySelectorAll('.tab');
 const content = [...document.querySelectorAll(".tab__content")];
 
-tabs.forEach((tab) => {
-	tab.addEventListener('click', () => {
-		const tabIndex = [...tabs].indexOf(tab);
+console.log(content)
 
+tabs.forEach((tab, index) => {
+	tab.addEventListener('click', () => {
 		tabs.forEach((tabs) => {
 			tabs.classList.remove('tab_active');
 		});
@@ -14,6 +14,6 @@ tabs.forEach((tab) => {
 		});
 
 		tab.classList.add('tab_active');
-		content[tabIndex].classList.add('tab__content_active');
+		content[index].classList.add('tab__content_active');
 	});
 });
