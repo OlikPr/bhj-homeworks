@@ -1,48 +1,32 @@
-const loader = document.getElementById('loader');
-const itemsContainer = document.getElementById('items');
+const form = document.getElementById('form');
+const progress = document.getElementById('progress');
 
-function fetchData() {
-	loader.classList.add('loader_active');
+form.addEventListener('submit', (e) => {
+	e.preventDefault();
 
-	fetch('https://students.netoservices.ru/nestjs-backend/slow-get-courses')
-		.then(response => response.json())
-		.then(data => {
-			const valuteData = data.response.Valute;
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', 'https://students.netoservices.ru/nestjs-backend/upload', true);
 
-			itemsContainer.innerHTML = '';
+	xhr.upload.addEventListener('progress', (event) => {
+		if (event.lengthComputable) {
+			const percentComplete = (event.loaded / event.total) * 100;
+			progress.value = percentComplete;
 
+		}
+	});
 
-			for (const key in valuteData) {
-				const valute = valuteData[key];
-
-				const item = document.createElement('div');
-				item.classList.add('item');
-
-				const code = document.createElement('div');
-				code.classList.add('item__code');
-				code.textContent = valute.CharCode;
-
-				const value = document.createElement('div');
-				value.classList.add('item__value');
-				value.textContent = valute.Value;
-
-				const currency = document.createElement('div');
-				currency.classList.add('item__currency');
-				currency.textContent = 'руб.';
-
-				item.appendChild(code);
-				item.appendChild(value);
-				item.appendChild(currency);
-
-				itemsContainer.appendChild(item);
+	xhr.onreadystatechange = () => {
+		if (xhr.readyState === XMLHttpRequest.DONE) {
+			console.log(xhr.status)
+			
+			if (xhr.status === 201) { // возвращает статус 201 ок, поэтому в условии написала 201
+				console.log('Загрузка завершена успешно');
+			} else {
+				console.error('Произошла ошибка при загрузке');
+				progress.value = 0;
 			}
+		}
+	};
 
-			loader.classList.remove('loader_active');
-		})
-		.catch(error => {
-			console.error('Ошибка:', error);
-			loader.classList.remove('loader_active');
-		});
-}
-
-fetchData();
+	xhr.send(new FormData(form));
+});
